@@ -1,4 +1,4 @@
-package de.hsbremen.mkss.restservice.repository;
+package de.hsbremen.mkss.restservice.exceptions.repository;
 
 import java.util.List;
 

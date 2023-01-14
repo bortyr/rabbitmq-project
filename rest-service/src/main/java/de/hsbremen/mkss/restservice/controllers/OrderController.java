@@ -4,16 +4,43 @@ import java.util.*;
 
 import de.hsbremen.mkss.restservice.entity.LineItem;
 import de.hsbremen.mkss.restservice.entity.OrderState;
-import de.hsbremen.mkss.restservice.exceptions.ItemNotFoundException;
 import de.hsbremen.mkss.restservice.exceptions.OorderItemNotFoundException;
 import de.hsbremen.mkss.restservice.exceptions.OorderNotInPreparationException;
-import de.hsbremen.mkss.restservice.repository.LineItemRepository;
+import de.hsbremen.mkss.restservice.exceptions.repository.LineItemRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import de.hsbremen.mkss.restservice.repository.oorderRepository;
+import de.hsbremen.mkss.restservice.exceptions.repository.oorderRepository;
 import de.hsbremen.mkss.restservice.entity.oorder;
 import de.hsbremen.mkss.restservice.exceptions.OorderNotFoundException;
+
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+
+
+
+import java.nio.charset.StandardCharsets;
+
+/*
+class Send {
+
+    private final static String QUEUE_NAME = "hello";
+
+    public void sendMsg() {
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost("localhost");
+        try (Connection connection = factory.newConnection();
+             Channel channel = connection.createChannel()) {
+            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+            String message = "Hello World!";
+            channel.basicPublish("", QUEUE_NAME, null, message.getBytes(StandardCharsets.UTF_8));
+            System.out.println(" [x] Sent '" + message + "'");
+        }
+    }
+}
+
+ */
 
 @RestController
 public class OrderController {

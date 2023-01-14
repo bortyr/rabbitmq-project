@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RabbitMQProject.iml" filepath="$PROJECT_DIR$/RabbitMQProject.iml" />
-      <module fileurl="file://$PROJECT_DIR$/order-events-processor/order-events-processor.iml" filepath="$PROJECT_DIR$/order-events-processor/order-events-processor.iml" />
     </modules>
   </component>
 </project>

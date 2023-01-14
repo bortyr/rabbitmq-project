@@ -1,4 +1,4 @@
-package de.hsbremen.mkss.restservice.repository;
+package de.hsbremen.mkss.restservice.exceptions.repository;
 
 import de.hsbremen.mkss.restservice.entity.LineItem;
 import org.springframework.data.repository.CrudRepository;
