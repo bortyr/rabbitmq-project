@@ -1,48 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
-    <!--
-        Depending on your project configuration (top-level Maven project?)
-        you should choose one of the following configuration snippets.
-    -->
-
-    <!-- Configuration, if top-level _Maven_ project exists -->
-    <!-- (Adapt to fit your top-level project!) -->
-
-    <!--    <parent>-->
-    <!--        <artifactId>MKSS-Demo</artifactId>-->
-    <!--        <groupId>de.hs-bremen.mkss</groupId>-->
-    <!--        <version>1.0-SNAPSHOT</version>-->
-    <!--    </parent>-->
-    <!--    <artifactId>events</artifactId>-->
-    <!--    <modelVersion>4.0.0</modelVersion>-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.0.0</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>de.hs-bremen.mkss</groupId>
+	<artifactId>rest-service</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Spring Boot REST Service</name>
+	<description>Exercise 6 MKSS Anders, Tyran, Lewna</description>
+	<properties>
+		<java.version>19</java.version>
 
 
-    <!-- Configuration, if there is no top-level _Maven_ project -->
-    <artifactId>rest-service</artifactId>
-    <groupId>de.hs-bremen.mkss</groupId>
-    <version>1.0-SNAPSHOT</version>
-    <modelVersion>4.0.0</modelVersion>
 
-    <!--
-        End of configuration alternatives.
-    -->
+	</properties>
+	<repositories>
+		<repository>
+			<id>java.net repository</id>
+			<url>http://download.java.net/maven/2</url>
+		</repository>
+	</repositories>
 
-    <!-- Compiler configuration: change to fit your Java installation -->
-    <properties>
-        <maven.compiler.source>12</maven.compiler.source>
-        <maven.compiler.target>12</maven.compiler.target>
-    </properties>
+	<dependencies>
+		<!-- Spring and Spring Boot dependencies -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-    <dependencies>
+		<!-- Databases - Uses H2 by default -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 
+
+<!--		&lt;!&ndash; caching &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>javax.cache</groupId>-->
+<!--			<artifactId>cache-api</artifactId>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.ehcache</groupId>-->
+<!--			<artifactId>ehcache</artifactId>-->
+<!--		</dependency>-->
+
+		<!-- webjars -->
+<!--		<dependency>-->
+<!--			<groupId>org.webjars.npm</groupId>-->
+<!--			<artifactId>bootstrap</artifactId>-->
+<!--			<version>${webjars-bootstrap.version}</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.webjars.npm</groupId>-->
+<!--			<artifactId>font-awesome</artifactId>-->
+<!--			<version>${webjars-font-awesome.version}</version>-->
+<!--		</dependency>-->
+		<!-- end of webjars -->
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
         <dependency>
-            <groupId>de.hs-bremen.mkss</groupId>
-            <artifactId>events</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
-
     </dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
