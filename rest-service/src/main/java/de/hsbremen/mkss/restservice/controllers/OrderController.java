@@ -1,28 +1,26 @@
 package de.hsbremen.mkss.restservice.controllers;
 
-import java.util.*;
-
-import de.hsbremen.mkss.restservice.entity.LineItem;
-import de.hsbremen.mkss.restservice.entity.OrderState;
-import de.hsbremen.mkss.restservice.exceptions.OorderItemNotFoundException;
-import de.hsbremen.mkss.restservice.exceptions.OorderNotInPreparationException;
-import de.hsbremen.mkss.restservice.exceptions.repository.LineItemRepository;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import de.hsbremen.mkss.restservice.exceptions.repository.oorderRepository;
-import de.hsbremen.mkss.restservice.entity.oorder;
-import de.hsbremen.mkss.restservice.exceptions.OorderNotFoundException;
-
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import de.hsbremen.mkss.restservice.entity.LineItem;
+import de.hsbremen.mkss.restservice.entity.OrderState;
 
-
+import de.hsbremen.mkss.restservice.entity.oorder;
+import de.hsbremen.mkss.restservice.exceptions.OorderItemNotFoundException;
+import de.hsbremen.mkss.restservice.exceptions.OorderNotFoundException;
+import de.hsbremen.mkss.restservice.exceptions.OorderNotInPreparationException;
+import de.hsbremen.mkss.restservice.repository.LineItemRepository;
+import de.hsbremen.mkss.restservice.repository.oorderRepository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-/*
 class Send {
 
     private final static String QUEUE_NAME = "hello";
@@ -37,15 +35,17 @@ class Send {
             channel.basicPublish("", QUEUE_NAME, null, message.getBytes(StandardCharsets.UTF_8));
             System.out.println(" [x] Sent '" + message + "'");
         }
+        catch (Exception e) {
+            System.out.println("ERROR: RabbitMQ send went wrong");
+        }
     }
 }
-
- */
-
 @RestController
 public class OrderController {
+    private final Send sendOkRabbit = new Send();
     @GetMapping("/health")
     String health() {
+        sendOkRabbit.sendMsg();
         return "OK";
     }
 
@@ -72,7 +72,7 @@ public class OrderController {
 
     //Retrieving all line items of an order with a given id
     @GetMapping("/order/{id}/item/{itemId}")
-    public ResponseEntity<LineItem> getLineItem(@PathVariable long id, @PathVariable long itemId) throws Exception {
+    public ResponseEntity<LineItem> getLineItem(@PathVariable long id, @PathVariable long itemId) {
         oorder order = repository.findById(id).orElseThrow(() -> new OorderItemNotFoundException(id, itemId) );
         Set<LineItem> items = order.getItems();
         for (LineItem item : items) {
@@ -98,7 +98,7 @@ public class OrderController {
 
     //Adding a line item to an order
     @PostMapping("/order/{orderId}/item")
-    public ResponseEntity<LineItem> addLineItem(@RequestParam String Product_Name, @RequestParam float Price, @RequestParam int Quantity, @PathVariable long orderId) throws Exception {
+    public ResponseEntity<LineItem> addLineItem(@RequestParam String Product_Name, @RequestParam float Price, @RequestParam int Quantity, @PathVariable long orderId) {
         oorder order = repository.findById(orderId).orElseThrow(() -> new OorderNotFoundException(orderId) );
 
         if (order.getState() == OrderState.EMPTY || order.getState() == OrderState.IN_PREPARATION) {
