@@ -10,8 +10,8 @@ import de.hsbremen.mkss.restservice.entity.oorder;
 import de.hsbremen.mkss.restservice.exceptions.OorderItemNotFoundException;
 import de.hsbremen.mkss.restservice.exceptions.OorderNotFoundException;
 import de.hsbremen.mkss.restservice.exceptions.OorderNotInPreparationException;
-import de.hsbremen.mkss.restservice.repository.LineItemRepository;
-import de.hsbremen.mkss.restservice.repository.oorderRepository;
+import de.hsbremen.mkss.restservice.exceptions.repository.LineItemRepository;
+import de.hsbremen.mkss.restservice.exceptions.repository.oorderRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
