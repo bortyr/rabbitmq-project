@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!--
+        Depending on your project configuration (top-level Maven project?)
+        you should choose one of the following configuration snippets.
+    -->
+
+    <!-- Configuration, if top-level _Maven_ project exists -->
+    <!-- (Adapt to fit your top-level project!) -->
+
+    <!--    <parent>-->
+    <!--        <artifactId>MKSS-Demo</artifactId>-->
+    <!--        <groupId>de.hs-bremen.mkss</groupId>-->
+    <!--        <version>1.0-SNAPSHOT</version>-->
+    <!--    </parent>-->
+    <!--    <artifactId>events</artifactId>-->
+    <!--    <modelVersion>4.0.0</modelVersion>-->
+
+
+    <!-- Configuration, if there is no top-level _Maven_ project -->
+    <artifactId>rest-service</artifactId>
+    <groupId>de.hs-bremen.mkss</groupId>
+    <version>1.0-SNAPSHOT</version>
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+        End of configuration alternatives.
+    -->
+
+    <!-- Compiler configuration: change to fit your Java installation -->
+    <properties>
+        <maven.compiler.source>12</maven.compiler.source>
+        <maven.compiler.target>12</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>de.hs-bremen.mkss</groupId>
+            <artifactId>events</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+    </dependencies>
+</project>
