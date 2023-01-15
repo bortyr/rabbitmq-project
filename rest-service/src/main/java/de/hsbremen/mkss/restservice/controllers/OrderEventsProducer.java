@@ -64,8 +64,33 @@ public class OrderEventsProducer implements CrudEventProducer<oorder> {
 	public void emitCreateEvent(oorder payload) {
 		EventWithPayload<oorder> event = buildEvent(Event.EventType.CREATED, payload);
 	
-		// TODO: send event to RabbitMQ exchange  
+		// TODO: send event to RabbitMQ exchange
 
+		// Configuration
+		String QUEUE_NAME = "hello";
+		ConnectionFactory factory = new ConnectionFactory();
+		factory.setHost("localhost");
+
+		// Perform connection
+		try (Connection connection = factory.newConnection();
+			 Channel channel = connection.createChannel()) {
+			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+			// Set message
+			String message = "New order" +
+					" Id: " + payload.getId() +
+					" Name: " + payload.getCustomerName() +
+					" State: " + payload.getState() +
+					" Items: " + payload.getItems() +
+					" Date: " + payload.getDate();
+			// Send the message
+			channel.basicPublish("", QUEUE_NAME, null, message.getBytes(StandardCharsets.UTF_8));
+			// Print if success
+			System.out.println("Sending message to RabbitMQ '" + message + "'");
+		} catch (Exception e) {
+			System.out.println("ERROR: RabbitMQ send went wrong");
+		}
+
+		// Print info about that
 		System.out.println("Sent event = " + event + " using exchange " + anExchangeName + " with routing key " + aRoutingKeyName);
 	}
 

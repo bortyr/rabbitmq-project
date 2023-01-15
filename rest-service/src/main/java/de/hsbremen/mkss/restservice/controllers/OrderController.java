@@ -80,6 +80,7 @@ public class OrderController {
         order.setCustomerName(customerName);
         order.setItems(new HashSet<>());
         repository.save(order);
+        eventsProducer.emitCreateEvent(order);
 
         return ResponseEntity.ok(order);
     }
