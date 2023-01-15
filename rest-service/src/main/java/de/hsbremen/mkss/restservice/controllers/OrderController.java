@@ -1,8 +1,6 @@
 package de.hsbremen.mkss.restservice.controllers;
 
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
+import de.hsbremen.mkss.events.Event;
 import de.hsbremen.mkss.restservice.entity.LineItem;
 import de.hsbremen.mkss.restservice.entity.OrderState;
 
@@ -12,40 +10,30 @@ import de.hsbremen.mkss.restservice.exceptions.OorderNotFoundException;
 import de.hsbremen.mkss.restservice.exceptions.OorderNotInPreparationException;
 import de.hsbremen.mkss.restservice.exceptions.repository.LineItemRepository;
 import de.hsbremen.mkss.restservice.exceptions.repository.oorderRepository;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-class Send {
 
-    private final static String QUEUE_NAME = "hello";
-
-    public void sendMsg() {
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
-        try (Connection connection = factory.newConnection();
-             Channel channel = connection.createChannel()) {
-            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-            String message = "Hello World!";
-            channel.basicPublish("", QUEUE_NAME, null, message.getBytes(StandardCharsets.UTF_8));
-            System.out.println(" [x] Sent '" + message + "'");
-        }
-        catch (Exception e) {
-            System.out.println("ERROR: RabbitMQ send went wrong");
-        }
-    }
-}
 @RestController
 public class OrderController {
-    private final Send sendOkRabbit = new Send();
+    private Event event;
+    private AmqpTemplate amqpTemplate;
+    private final OrderEventsProducer eventsProducer = new OrderEventsProducer(amqpTemplate);
     @GetMapping("/health")
     String health() {
-        sendOkRabbit.sendMsg();
+        oorder order = new oorder();
+        Date date = new Date();
+        order.setDate(date);
+        order.setCustomerName("helloname");
+        //eventsProducer.emitCreateEvent(order);
+        eventsProducer.sendMsg();
+
         return "OK";
     }
 
