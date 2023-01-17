@@ -1,34 +1,23 @@
 package de.hsbremen.mkss.ordereventsprocessor;
 
+import de.hsbremen.mkss.events.EventWithPayload;
+import de.hsbremen.mkss.restservice.entity.oorder;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Component
+@Service
 public class EventProcessor {
-
-    @Autowired
-    private final AmqpTemplate amqpTemplate;
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
-
-    public EventProcessor(AmqpTemplate amqpTemplate) {
-            this.amqpTemplate = amqpTemplate;
-        }
-
-    @PostConstruct
-    public void start() {
-            executorService.submit(this::pollMessages);
-        }
-
-    private void pollMessages() {
-        while (true) {
-            Object message = amqpTemplate.receiveAndConvert();
-            System.out.println("Received message: " + message);
-
-        }
+    @RabbitListener(queues="${my.rabbitmq.a.queue}")
+    public void receiveMessage(EventWithPayload<oorder> event) {
+        System.out.println(event);
     }
+
+
+
 }

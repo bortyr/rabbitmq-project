@@ -16,91 +16,88 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class OrderEventsProducer implements CrudEventProducer<oorder> {
 
-	private AmqpTemplate amqpTemplate;
+    private AmqpTemplate amqpTemplate;
 
-	/*
+    /*
     @Value("${localhost:5672}")
     String anExchangeName;
-	 */
-	String anExchangeName = "localhost:5672";
+     */
+    String anExchangeName = "localhost:5672";
 
-	/*
+    /*
     @Value("${}")
     String aRoutingKeyName;
-	 */
-	String aRoutingKeyName = "";
+     */
+    String aRoutingKeyName = "";
 
 
-	public OrderEventsProducer(AmqpTemplate amqpTemplate) {
-		this.amqpTemplate = amqpTemplate;
-	}
+    public OrderEventsProducer(AmqpTemplate amqpTemplate) {
+        this.amqpTemplate = amqpTemplate;
+    }
 
 
-	private EventWithPayload<oorder> buildEvent(Event.EventType type, oorder payload) {
-		EventWithPayload<oorder> event = EventWithPayload.<oorder> builder()
-				.type(type)
-				.payload(payload)
-				.build();
-		return event;
-	}
+    private EventWithPayload<oorder> buildEvent(Event.EventType type, oorder payload) {
+        EventWithPayload<oorder> event = EventWithPayload.<oorder>builder()
+                .type(type)
+                .payload(payload)
+                .build();
+        return event;
+    }
 
-	// sendMsg - example of working connection to rabbitmq
-	public void sendMsg() {
-		String QUEUE_NAME = "hello";
-		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost("localhost");
-		try (Connection connection = factory.newConnection();
-			 Channel channel = connection.createChannel()) {
-			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-			String message = "Hello World!";
-			channel.basicPublish("", QUEUE_NAME, null, message.getBytes(StandardCharsets.UTF_8));
-			System.out.println("Sending message to RabbitMQ '" + message + "'");
-		} catch (Exception e) {
-			System.out.println("ERROR: RabbitMQ send went wrong");
+    // sendMsg - example of working connection to rabbitmq
+    public void sendMsg() {
+        String QUEUE_NAME = "hello";
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost("localhost");
+        try (Connection connection = factory.newConnection();
+             Channel channel = connection.createChannel()) {
+            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+            String message = "Hello World!";
+            channel.basicPublish("", QUEUE_NAME, null, message.getBytes(StandardCharsets.UTF_8));
+            System.out.println("Sending message to RabbitMQ '" + message + "'");
+        } catch (Exception e) {
+            System.out.println("ERROR: RabbitMQ send went wrong");
+        }
+    }
+
+    @Override
+    public void emitCreateEvent(oorder payload) {
+        EventWithPayload<oorder> event = buildEvent(Event.EventType.CREATED, payload);
+        try {
+            amqpTemplate.convertAndSend("order.routing.key", event);
+        } catch (Exception exception) {
+			exception.printStackTrace();
+			return;
+        }
+        // Print info about that
+        System.out.println("Sent event = " + event + " using exchange " + anExchangeName + " with routing key " + aRoutingKeyName);
+    }
+
+    @Override
+    public void emitUpdateEvent(oorder payload) {
+        // TODO: Implementation for update events (e.g. changed order)
+		EventWithPayload<oorder> event = buildEvent(Event.EventType.CHANGED, payload);
+		try {
+			amqpTemplate.convertAndSend("order.routing.key", event);
+		} catch (Exception exception) {
+			exception.printStackTrace();
+			return;
 		}
-	}
-
-	@Override
-	public void emitCreateEvent(oorder payload) {
-		EventWithPayload<oorder> event = buildEvent(Event.EventType.CREATED, payload);
-	
-		// TODO: send event to RabbitMQ exchange
-
-		// Configuration
-		String QUEUE_NAME = "hello";
-		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost("localhost");
-
-		// Perform connection
-		try (Connection connection = factory.newConnection();
-			 Channel channel = connection.createChannel()) {
-			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-			// Set message
-			String message = "New order" +
-					" Id: " + payload.getId() +
-					" Name: " + payload.getCustomerName() +
-					" State: " + payload.getState() +
-					" Items: " + payload.getItems() +
-					" Date: " + payload.getDate();
-			// Send the message
-			channel.basicPublish("", QUEUE_NAME, null, message.getBytes(StandardCharsets.UTF_8));
-			// Print if success
-			System.out.println("Sending message to RabbitMQ '" + message + "'");
-		} catch (Exception e) {
-			System.out.println("ERROR: RabbitMQ send went wrong");
-		}
-
 		// Print info about that
-		System.out.println("Sent event = " + event + " using exchange " + anExchangeName + " with routing key " + aRoutingKeyName);
-	}
+		System.out.println("Changed event = " + event + " using exchange " + anExchangeName + " with routing key " + aRoutingKeyName);
+    }
 
-	@Override
-	public void emitUpdateEvent(oorder payload) {
-		// TODO: Implementation for update events (e.g. changed order)
-	}
-
-	@Override
-	public void emitDeleteEvent(oorder payload) {
-		// TODO: Implementation for delete events (e.g. deleted order)
-	}
+    @Override
+    public void emitDeleteEvent(oorder payload) {
+        // TODO: Implementation for delete events (e.g. deleted order)
+		EventWithPayload<oorder> event = buildEvent(Event.EventType.DELETED, payload);
+		try {
+			amqpTemplate.convertAndSend("order.routing.key", event);
+		} catch (Exception exception) {
+			exception.printStackTrace();
+			return;
+		}
+		// Print info about that
+		System.out.println("Delete event = " + event + " using exchange " + anExchangeName + " with routing key " + aRoutingKeyName);
+    }
 }

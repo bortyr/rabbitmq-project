@@ -1,6 +1,5 @@
 package de.hsbremen.mkss.restservice.controllers;
 
-import de.hsbremen.mkss.events.Event;
 import de.hsbremen.mkss.restservice.entity.LineItem;
 import de.hsbremen.mkss.restservice.entity.OrderState;
 
@@ -10,7 +9,6 @@ import de.hsbremen.mkss.restservice.exceptions.OorderNotFoundException;
 import de.hsbremen.mkss.restservice.exceptions.OorderNotInPreparationException;
 import de.hsbremen.mkss.restservice.exceptions.repository.LineItemRepository;
 import de.hsbremen.mkss.restservice.exceptions.repository.oorderRepository;
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +20,15 @@ import java.util.Set;
 
 @RestController
 public class OrderController {
-    private Event event;
-    private AmqpTemplate amqpTemplate;
-    private final OrderEventsProducer eventsProducer = new OrderEventsProducer(amqpTemplate);
+
+    private final OrderEventsProducer eventsProducer ;
+
+    public OrderController(OrderEventsProducer eventsProducer, oorderRepository repository, LineItemRepository lineItemRepository) {
+        this.eventsProducer = eventsProducer;
+        this.repository = repository;
+        this.lineItemRepository = lineItemRepository;
+    }
+
     @GetMapping("/health")
     String health() {
         oorder order = new oorder();
@@ -40,10 +44,6 @@ public class OrderController {
     private final oorderRepository repository;
     private final LineItemRepository lineItemRepository;
 
-    OrderController(oorderRepository repository, LineItemRepository lineItemRepository) {
-        this.repository = repository;
-        this.lineItemRepository = lineItemRepository;
-    }
 
     //Retrieving all orders (including associated line items)
     @GetMapping("/orders")

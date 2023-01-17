@@ -1,5 +1,6 @@
 package de.hsbremen.mkss.restservice.entity;
 
+
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.*;
 import lombok.Getter;

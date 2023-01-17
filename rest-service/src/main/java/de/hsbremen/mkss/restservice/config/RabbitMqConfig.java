@@ -1,4 +1,4 @@
-package de.hsbremen.mkss.ordereventsprocessor;
+package de.hsbremen.mkss.restservice.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -42,7 +42,7 @@ public class RabbitMqConfig {
     }
 
     // Bindings are required for receiving event messages:
-    // connecting of a queue to an exchange
+    // connecting of a queue to an exchange 
     @Bean
     Binding someBinding(Queue queue, DirectExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(routingKeyName);
@@ -64,4 +64,3 @@ public class RabbitMqConfig {
         return rabbitTemplate;
     }
 }
-
