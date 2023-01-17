@@ -13,11 +13,17 @@ import java.util.concurrent.Executors;
 
 @Service
 public class EventProcessor {
-    @RabbitListener(queues="${my.rabbitmq.a.queue}")
-    public void receiveMessage(EventWithPayload<oorder> event) {
-        System.out.println(event);
+
+    private AmqpTemplate amqpTemplateReply;
+    public EventProcessor(AmqpTemplate amqpTemplate) {
+        this.amqpTemplateReply = amqpTemplate;
     }
 
 
+    @RabbitListener(queues="${my.rabbitmq.a.queue}")
+    public void receiveMessage(EventWithPayload<oorder> event) {
+        System.out.println(event);
+        amqpTemplateReply.convertAndSend(event);
+    }
 
 }

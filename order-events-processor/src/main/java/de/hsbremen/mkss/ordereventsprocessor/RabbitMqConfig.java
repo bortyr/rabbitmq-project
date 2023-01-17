@@ -17,10 +17,10 @@ public class RabbitMqConfig {
     @Value("${my.rabbitmq.an.exchange}")
     String exchangeName;
 
-    @Value("${my.rabbitmq.a.queue}")
+    @Value("${my.rabbitmq.a.queue.reply}")
     String queueName;
 
-    @Value("${my.rabbitmq.a.routing.key}")
+    @Value("${my.rabbitmq.a.routing.key.reply}")
     String routingKeyName;
 
     // BEGIN: Template code for direct exchanges and fanout exchanges
