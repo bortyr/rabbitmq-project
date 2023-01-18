@@ -1,6 +1,6 @@
-package de.hsbremen.mkss.restservice.exceptions.repository;
+package de.hsbremen.mkss.restservice.repository;
 
-import de.hsbremen.mkss.restservice.entity.LineItem;
+import de.hsbremen.mkss.restservice.controllers.entity.LineItem;
 import org.springframework.data.repository.CrudRepository;
 
 public interface LineItemRepository extends CrudRepository<LineItem, Long> {

@@ -6,15 +6,14 @@ import com.rabbitmq.client.ConnectionFactory;
 import de.hsbremen.mkss.events.CrudEventProducer;
 import de.hsbremen.mkss.events.Event;
 import de.hsbremen.mkss.events.EventWithPayload;
-import de.hsbremen.mkss.restservice.entity.oorder;
+import de.hsbremen.mkss.restservice.controllers.entity.Oorder;
 import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 
 @Component
-public class OrderEventsProducer implements CrudEventProducer<oorder> {
+public class OrderEventsProducer implements CrudEventProducer<Oorder> {
 
     private AmqpTemplate amqpTemplate;
 
@@ -36,8 +35,8 @@ public class OrderEventsProducer implements CrudEventProducer<oorder> {
     }
 
 
-    private EventWithPayload<oorder> buildEvent(Event.EventType type, oorder payload) {
-        EventWithPayload<oorder> event = EventWithPayload.<oorder>builder()
+    private EventWithPayload<Oorder> buildEvent(Event.EventType type, Oorder payload) {
+        EventWithPayload<Oorder> event = EventWithPayload.<Oorder>builder()
                 .type(type)
                 .payload(payload)
                 .build();
@@ -61,8 +60,8 @@ public class OrderEventsProducer implements CrudEventProducer<oorder> {
     }
 
     @Override
-    public void emitCreateEvent(oorder payload) {
-        EventWithPayload<oorder> event = buildEvent(Event.EventType.CREATED, payload);
+    public void emitCreateEvent(Oorder payload) {
+        EventWithPayload<Oorder> event = buildEvent(Event.EventType.CREATED, payload);
         try {
             amqpTemplate.convertAndSend("order.routing.key", event);
         } catch (Exception exception) {
@@ -74,9 +73,9 @@ public class OrderEventsProducer implements CrudEventProducer<oorder> {
     }
 
     @Override
-    public void emitUpdateEvent(oorder payload) {
+    public void emitUpdateEvent(Oorder payload) {
         // TODO: Implementation for update events (e.g. changed order)
-		EventWithPayload<oorder> event = buildEvent(Event.EventType.CHANGED, payload);
+		EventWithPayload<Oorder> event = buildEvent(Event.EventType.CHANGED, payload);
 		try {
 			amqpTemplate.convertAndSend("order.routing.key", event);
 		} catch (Exception exception) {
@@ -88,9 +87,9 @@ public class OrderEventsProducer implements CrudEventProducer<oorder> {
     }
 
     @Override
-    public void emitDeleteEvent(oorder payload) {
+    public void emitDeleteEvent(Oorder payload) {
         // TODO: Implementation for delete events (e.g. deleted order)
-		EventWithPayload<oorder> event = buildEvent(Event.EventType.DELETED, payload);
+		EventWithPayload<Oorder> event = buildEvent(Event.EventType.DELETED, payload);
 		try {
 			amqpTemplate.convertAndSend("order.routing.key", event);
 		} catch (Exception exception) {

@@ -1,4 +1,4 @@
-package de.hsbremen.mkss.restservice.entity;
+package de.hsbremen.mkss.restservice.controllers.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.micrometer.common.lang.NonNull;
@@ -47,7 +47,7 @@ public class LineItem {
     @Getter
     @Setter
     @JsonIgnore
-    private oorder Order;
+    private Oorder Order;
 
 }
 

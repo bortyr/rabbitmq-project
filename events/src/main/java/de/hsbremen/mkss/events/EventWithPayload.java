@@ -28,8 +28,9 @@ public class EventWithPayload<T> extends Event {
     private EventWithPayload(@JsonProperty("id") int eventId,
                             @JsonProperty("date") Date date,
                             @JsonProperty("type") EventType type,
+                            @JsonProperty("status") EventStatus status,
                             @JsonProperty("payload") T payload) {
-        super(eventId, type, date);
+        super(eventId, type, date, status);
         this.payload = payload;
     }
 

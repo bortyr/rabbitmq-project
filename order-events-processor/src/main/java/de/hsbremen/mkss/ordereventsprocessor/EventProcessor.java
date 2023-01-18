@@ -1,15 +1,13 @@
 package de.hsbremen.mkss.ordereventsprocessor;
 
+import de.hsbremen.mkss.events.Event;
 import de.hsbremen.mkss.events.EventWithPayload;
-import de.hsbremen.mkss.restservice.entity.oorder;
-import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
+import de.hsbremen.mkss.restservice.controllers.entity.Oorder;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Random;
 
 @Service
 public class EventProcessor {
@@ -19,11 +17,25 @@ public class EventProcessor {
         this.amqpTemplateReply = amqpTemplate;
     }
 
-
-    @RabbitListener(queues="${my.rabbitmq.a.queue}")
-    public void receiveMessage(EventWithPayload<oorder> event) {
-        System.out.println(event);
-        amqpTemplateReply.convertAndSend(event);
+    public boolean ReplyFailure() {
+        Random replyStatus = new Random();
+        Boolean replyProceeded = replyStatus.nextBoolean();
+        return replyProceeded;
     }
 
+    @RabbitListener(queues="${my.rabbitmq.a.queue}")
+    public void receiveMessage(EventWithPayload<Oorder> event) {
+        System.out.println(event);
+
+        if (ReplyFailure()){
+            amqpTemplateReply.convertAndSend(event);
+            event.setState(Event.EventStatus.ACCEPTED);
+        }else{
+            event.setState(Event.EventStatus.REJECTED);
+        }
+        System.out.println("Order state:" + event.getState());
+
+
+
+    }
 }

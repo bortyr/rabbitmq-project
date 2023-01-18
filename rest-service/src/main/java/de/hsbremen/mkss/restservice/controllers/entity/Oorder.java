@@ -1,4 +1,4 @@
-package de.hsbremen.mkss.restservice.entity;
+package de.hsbremen.mkss.restservice.controllers.entity;
 
 
 import io.micrometer.common.lang.NonNull;
@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "oorder")
-public class oorder {
+public class Oorder {
 
     @Getter
     @Setter
