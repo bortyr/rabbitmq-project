@@ -11,12 +11,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 @ToString
 public abstract class Event {
 
-    public void setState(EventStatus accepted) {
-    }
-
-    public <T> T getState() {
-        return null;
-    }
 
     public enum EventType {CREATED, CHANGED, DELETED};
 

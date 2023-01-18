@@ -29,11 +29,11 @@ public class EventProcessor {
 
         if (ReplyFailure()){
             amqpTemplateReply.convertAndSend(event);
-            event.setState(Event.EventStatus.ACCEPTED);
+            event.setStatus(Event.EventStatus.ACCEPTED);
         }else{
-            event.setState(Event.EventStatus.REJECTED);
+            event.setStatus(Event.EventStatus.REJECTED);
         }
-        System.out.println("Order state:" + event.getState());
+        System.out.println("Order status:" + event.getStatus());
 
 
 
