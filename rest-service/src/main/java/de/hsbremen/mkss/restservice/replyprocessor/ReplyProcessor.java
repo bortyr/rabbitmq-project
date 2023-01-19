@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ReplyProcessor {
+
     @RabbitListener(queues="${my.rabbitmq.a.queue.reply}")
     public void receiveMessage(EventWithPayload<Oorder> event) {
         System.out.println(event);

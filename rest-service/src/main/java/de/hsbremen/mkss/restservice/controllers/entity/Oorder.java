@@ -1,6 +1,8 @@
 package de.hsbremen.mkss.restservice.controllers.entity;
 
 
+import de.hsbremen.mkss.events.Event;
+import de.hsbremen.mkss.events.EventStatus;
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -39,6 +41,13 @@ public class Oorder {
     @Column(name = "state")
     @Enumerated(EnumType.STRING)
     private OrderState state = OrderState.EMPTY;
+
+    @Getter
+    @Setter
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private EventStatus status = EventStatus.EMPTY;
+
 
     @OneToMany(mappedBy = "Order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 

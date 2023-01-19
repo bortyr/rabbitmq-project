@@ -14,8 +14,6 @@ public abstract class Event {
 
     public enum EventType {CREATED, CHANGED, DELETED};
 
-    public enum EventStatus {EMPTY, ACCEPTED, REJECTED};
-
     private final static AtomicInteger counter = new AtomicInteger(0);
 
     private int id;

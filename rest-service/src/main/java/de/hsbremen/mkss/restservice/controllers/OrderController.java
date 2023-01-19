@@ -80,7 +80,6 @@ public class OrderController {
         order.setCustomerName(customerName);
         order.setItems(new HashSet<>());
         repository.save(order);
-        eventsProducer.emitCreateEvent(order);
 
         return ResponseEntity.ok(order);
     }
@@ -135,6 +134,7 @@ public class OrderController {
         if(order.getState() == OrderState.IN_PREPARATION)
         {
             order.setState(OrderState.COMMITTED);
+            eventsProducer.emitCreateEvent(order);
             repository.save(order);
             return ResponseEntity.ok(order);
         }
