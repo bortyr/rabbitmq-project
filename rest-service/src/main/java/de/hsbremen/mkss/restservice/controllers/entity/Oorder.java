@@ -46,7 +46,7 @@ public class Oorder {
     @Setter
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private EventStatus status = EventStatus.EMPTY;
+    private EventStatus status = EventStatus.REJECTED;
 
 
     @OneToMany(mappedBy = "Order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)

@@ -1,5 +1,6 @@
 package de.hsbremen.mkss.restservice.replyprocessor;
 
+import de.hsbremen.mkss.events.EventStatus;
 import de.hsbremen.mkss.events.EventWithPayload;
 import de.hsbremen.mkss.restservice.controllers.entity.Oorder;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -10,6 +11,7 @@ public class ReplyProcessor {
 
     @RabbitListener(queues="${my.rabbitmq.a.queue.reply}")
     public void receiveMessage(EventWithPayload<Oorder> event) {
+        event.setStatus(EventStatus.ACCEPTED);
         System.out.println(event);
     }
 }
